@@ -2,10 +2,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class IngredienteService {
-  static Database? _db;
-  // define que somente uma instancia do db estára aberta
-  static final IngredienteService instance = IngredienteService._constructor();
-
   final String _ingNomeTabela = "ing_ingrendiente";
   final String _ingId = "ing_id";
   final String _ingNome = "ing_nome";
@@ -17,6 +13,9 @@ class IngredienteService {
 
   // metodo construtor
   IngredienteService._constructor();
+
+  // define que somente uma instancia do db estára aberta
+  static final IngredienteService instance = IngredienteService._constructor();
 
   Future<Database> getDatabase() async {
     final dbDirPath = await getDatabasesPath();
@@ -41,6 +40,8 @@ class IngredienteService {
     );
     return database;
   }
+
+  static Database? _db;
 
   Future<Database> get database async {
     if (_db != null) {

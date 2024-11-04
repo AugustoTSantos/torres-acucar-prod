@@ -2,10 +2,6 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ReceitaService {
-  static Database? _db;
-  // define que somente uma instancia do db estára aberta
-  static final ReceitaService instance = ReceitaService._constructor();
-
   // nome da tabela e colunas
   final String _recNomeTabela = "rec_receita";
   final String _recId = "rec_id";
@@ -16,6 +12,9 @@ class ReceitaService {
 
   // metodo construtor
   ReceitaService._constructor();
+
+  // define que somente uma instancia do db estára aberta
+  static final ReceitaService instance = ReceitaService._constructor();
 
   Future<Database> getDatabase() async {
     final dbDirPath = await getDatabasesPath();
@@ -39,6 +38,8 @@ class ReceitaService {
     );
     return database;
   }
+
+  static Database? _db;
 
   Future<Database> get database async {
     if (_db != null) {
