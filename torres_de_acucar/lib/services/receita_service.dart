@@ -17,19 +17,10 @@ class ReceitaService {
   // metodo construtor
   ReceitaService._constructor();
 
-  Future<Database> get database async {
-    if (_db != null) {
-      return _db!;
-    } else {
-      _db = await getDatabase();
-    }
-    return _db!;
-  }
-
   Future<Database> getDatabase() async {
     final dbDirPath = await getDatabasesPath();
 
-    // usa join para atribuir o caminho do db com o db todo.db
+    // usa join para atribuir o caminho do db com o db torres_de_acucar.db
     final dbPath = join(dbDirPath, "torres_de_acucar.db");
 
     final database = await openDatabase(
@@ -39,9 +30,9 @@ class ReceitaService {
         CREATE TABLE $_recNomeTabela (
           $_recId INTEGER PRIMARY KEY,
           $_recNome TEXT NOT NULL,
-          $_recPrecoUnitario REAL NOT NULL,
-          $_recQuantidadeRestante INTEGER NOT NULL,
-          $_recValidade INTEGER NOT NULL,
+          $_recPrecoUnitario REAL,
+          $_recQuantidadeRestante INTEGER,
+          $_recValidade INTEGER,
         )
       ''');
       },
@@ -49,45 +40,59 @@ class ReceitaService {
     return database;
   }
 
+  Future<Database> get database async {
+    if (_db != null) {
+      return _db!;
+    } else {
+      _db = await getDatabase();
+    }
+    return _db!;
+  }
+
   // Adiciona uma nova receita
-  Future<void> addReceita(String nome, double precoUnitario, int quantidadeRestante, DateTime validade) async {
+  Future<void> addReceita(
+    String recNome,
+    double recPrecoUnitario,
+    int recQuantidadeRestante,
+    DateTime recValidade,
+  ) async {
     final db = await database;
 
     await db.insert(
       _recNomeTabela,
       {
-        _recNome: nome,
-        _recPrecoUnitario: precoUnitario,
-        _recQuantidadeRestante: quantidadeRestante,
-        _recValidade: validade.millisecondsSinceEpoch, // Armazena data como INTEGER
+        _recNome: recNome,
+        _recPrecoUnitario: recPrecoUnitario,
+        _recQuantidadeRestante: recQuantidadeRestante,
+        _recValidade: recValidade.millisecondsSinceEpoch, // Armazena data como INTEGER
       },
     );
   }
 
-// Recupera todas as receitas
-  Future<List<Map<String, dynamic>>> getReceitas() async {
-    final db = await database;
-    return await db.query(_recNomeTabela);
-  }
-
-// Atualiza uma receita
-  Future<void> updateReceita(int id, Map<String, dynamic> values) async {
+  // Atualiza uma receita
+  Future<void> updateReceita(int recId, Map<String, dynamic> values) async {
     final db = await database;
     await db.update(
       _recNomeTabela,
       values,
       where: "$_recId = ?",
-      whereArgs: [id],
+      whereArgs: [recId],
     );
   }
 
+  // Recupera todas as receitas
+  Future<List<Map<String, dynamic>>> getReceitas() async {
+    final db = await database;
+    return await db.query(_recNomeTabela);
+  }
+
 // Exclui uma receita
-  Future<void> deleteReceita(int id) async {
+  Future<void> deleteReceita(int recId) async {
     final db = await database;
     await db.delete(
       _recNomeTabela,
       where: "$_recId = ?",
-      whereArgs: [id],
+      whereArgs: [recId],
     );
   }
 }
