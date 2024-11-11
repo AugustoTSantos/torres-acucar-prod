@@ -22,7 +22,7 @@ class ClienteService {
       onCreate: (db, version) {
         db.execute('''
         CREATE TABLE $_cliNomeTabela (
-          $_cliId INTEGER PRIMARY KEY,
+          $_cliId INTEGER PRIMARY KEY AUTOINCREMENT,
           $_cliNome TEXT NOT NULL,
           $_cliTelefone1 TEXT,
           $_cliTelefone2 TEXT,

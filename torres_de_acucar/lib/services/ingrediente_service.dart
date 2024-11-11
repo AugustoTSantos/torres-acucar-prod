@@ -27,7 +27,7 @@ class IngredienteService {
       onCreate: (db, version) {
         db.execute('''
           CREATE TABLE $_ingNomeTabela (
-            $_ingId INTEGER PRIMARY KEY,
+            $_ingId INTEGER PRIMARY KEY AUTOINCREMENT,
             $_ingNome TEXT NOT NULL,
             $_ingQuantidade REAL,
             $_ingPreco REAL,

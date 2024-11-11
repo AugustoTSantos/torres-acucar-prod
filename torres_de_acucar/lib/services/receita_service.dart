@@ -24,16 +24,17 @@ class ReceitaService {
 
     final database = await openDatabase(
       dbPath,
+      version: 1,
       onCreate: (db, version) {
         db.execute('''
-        CREATE TABLE $_recNomeTabela (
-          $_recId INTEGER PRIMARY KEY,
-          $_recNome TEXT NOT NULL,
-          $_recPrecoUnitario REAL,
-          $_recQuantidadeRestante INTEGER,
-          $_recValidade INTEGER,
-        )
-      ''');
+      CREATE TABLE $_recNomeTabela (
+        $_recId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $_recNome TEXT NOT NULL,
+        $_recPrecoUnitario REAL,
+        $_recQuantidadeRestante INTEGER,
+        $_recValidade INTEGER
+      )
+    ''');
       },
     );
     return database;
@@ -53,9 +54,9 @@ class ReceitaService {
   // Adiciona uma nova receita
   Future<void> addReceita(
     String recNome,
-    double recPrecoUnitario,
-    int recQuantidadeRestante,
-    DateTime recValidade,
+    double? recPrecoUnitario,
+    int? recQuantidadeRestante,
+    DateTime? recValidade,
   ) async {
     final db = await database;
 
@@ -63,9 +64,9 @@ class ReceitaService {
       _recNomeTabela,
       {
         _recNome: recNome,
-        _recPrecoUnitario: recPrecoUnitario,
-        _recQuantidadeRestante: recQuantidadeRestante,
-        _recValidade: recValidade.millisecondsSinceEpoch, // Armazena data como INTEGER
+        _recPrecoUnitario: recPrecoUnitario ?? 0.0, // Default to 0.0 if null
+        _recQuantidadeRestante: recQuantidadeRestante ?? 0, // Default to 0 if null
+        _recValidade: recValidade?.millisecondsSinceEpoch ?? 0, // Default date
       },
     );
   }

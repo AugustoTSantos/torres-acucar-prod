@@ -5,19 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "flutter_application_1",
+            "name": "torres_de_acucar",
             "request": "launch",
             "type": "dart",
             "deviceId": "0062330266"
         },
         {
-            "name": "flutter_application_1 (profile mode)",
+            "name": "torres_de_acucar (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "flutter_application_1 (release mode)",
+            "name": "torres_de_acucar (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
